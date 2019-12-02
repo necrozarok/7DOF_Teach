@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ConnectUi</class>
+ <widget class="QDialog" name="ConnectUi">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>连接界面</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="DOF_Teach.qrc">
+    <normaloff>:/icon/ico/usb_connected_128px_1168710_easyicon.net.ico</normaloff>:/icon/ico/usb_connected_128px_1168710_easyicon.net.ico</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#ConnectUi{
+font: 12pt &quot;Adobe 黑体 Std R&quot;;
+background-color:#464646;
+color:#464646;
+}</string>
+  </property>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>32</x>
+     <y>10</y>
+     <width>341</width>
+     <height>231</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="styleSheet">
+       <string notr="true">font: 12pt &quot;Adobe 黑体 Std R&quot;;
+color:#ffffff;</string>
+      </property>
+      <property name="text">
+       <string>设备名称</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QComboBox" name="DeviceNameSelection"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="styleSheet">
+       <string notr="true">font: 12pt &quot;Adobe 黑体 Std R&quot;;
+color:#ffffff;</string>
+      </property>
+      <property name="text">
+       <string>协议栈</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QComboBox" name="ProtocolStackNameSelection"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_3">
+      <property name="styleSheet">
+       <string notr="true">font: 12pt &quot;Adobe 黑体 Std R&quot;;
+color:#ffffff;</string>
+      </property>
+      <property name="text">
+       <string>EPOS接口类型</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QComboBox" name="InterfaceNameSelection"/>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_4">
+      <property name="styleSheet">
+       <string notr="true">font: 12pt &quot;Adobe 黑体 Std R&quot;;
+color:#ffffff;</string>
+      </property>
+      <property name="text">
+       <string>EPOS端口号</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QComboBox" name="PortNameSelection"/>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_5">
+      <property name="styleSheet">
+       <string notr="true">font: 12pt &quot;Adobe 黑体 Std R&quot;;
+color:#ffffff;</string>
+      </property>
+      <property name="text">
+       <string>Dynamixel端口</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QComboBox" name="DyComSelection"/>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_6">
+      <property name="styleSheet">
+       <string notr="true">font: 12pt &quot;Adobe 黑体 Std R&quot;;
+color:#ffffff;</string>
+      </property>
+      <property name="text">
+       <string>Dynamixel波特率</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QComboBox" name="DyBaudrate">
+      <item>
+       <property name="text">
+        <string>9600</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>57142</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>115200</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="layoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>250</y>
+     <width>341</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QPushButton" name="btnConnect">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="sizeIncrement">
+       <size>
+        <width>0</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"> 
+#btnConnect{  
+	font: 75 12pt &quot;3ds&quot;;
+    border: 1px solid #C0C0C0;  
+    background-color:#19ff00;  
+    border-style: solid;  
+    border-radius:4px;  
+    width: 100px;  
+    height:20px;  
+    padding:0 0px;  
+} 
+#btnConnect:hover{     
+    border: 1px solid #E3C46F;  
+    background-color:#FEF4BF;  
+    border-style: solid;  
+    border-radius:2px;  
+    width: 40px;  
+    height:20px;  
+    padding:0 0px;  
+}  
+#btnConnect:pressed{  
+    background-color:#EAF0FF;  
+    border: 1px solid #AAB4C4;  
+    width: 40px;  
+    height:20px;  
+    padding:0 0px;  
+    border-radius:1px;  
+}</string>
+      </property>
+      <property name="text">
+       <string>Connect</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="btnExit">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"> 
+#btnExit{  
+	font: 12pt &quot;3ds&quot;;
+    border: 1px solid #C0C0C0;  
+    background-color:#ff0509;  
+    border-style: solid;  
+    border-radius:4px;  
+    width: 100px;  
+    height:20px;  
+    padding:0 0px;  
+} 
+#btnExit:hover{     
+    border: 1px solid #E3C46F;  
+    background-color:#FEF4BF;  
+    border-style: solid;  
+    border-radius:2px;  
+    width: 40px;  
+    height:20px;  
+    padding:0 0px;  
+}  
+#btnExit:pressed{  
+    background-color:#EAF0FF;  
+    border: 1px solid #AAB4C4;  
+    width: 40px;  
+    height:20px;  
+    padding:0 0px;  
+    border-radius:1px;  
+}</string>
+      </property>
+      <property name="text">
+       <string>Exit</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="DOF_Teach.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>btnConnect</sender>
+   <signal>clicked()</signal>
+   <receiver>ConnectUi</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>114</x>
+     <y>275</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnExit</sender>
+   <signal>clicked()</signal>
+   <receiver>ConnectUi</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>286</x>
+     <y>275</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

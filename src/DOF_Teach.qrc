@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>ico/exit_128px.ico</file>
+        <file>ico/usb_connected_128px_1168710_easyicon.net.ico</file>
+        <file>ico/data_128px_1156789_easyicon.net.ico</file>
+        <file>ico/electric_radiator_128px_1228160_easyicon.net.ico</file>
+        <file>ico/speedometer_128px_1229674_easyicon.net.ico</file>
+        <file>ico/machine2.ico</file>
+        <file>ico/open_in_browser_128px_1169854_easyicon.net.ico</file>
+        <file>ico/saving_128px_1148565_easyicon.net.ico</file>
+        <file>ico/save_as_128px_1169862_easyicon.net.ico</file>
+    </qresource>
+</RCC>
