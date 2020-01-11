@@ -34,4 +34,6 @@ private slots:
 	void setupRealtimeTorgueData(QCustomPlot *customPlot);
 signals:
 	void closedSignal();
+private:
+	void closeEvent(QCloseEvent *event);
 };

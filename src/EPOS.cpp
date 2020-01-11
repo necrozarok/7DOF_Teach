@@ -311,6 +311,11 @@ void EPOS::SetMaxAcceleration(WORD node, DWORD max_acceleration)
 	VCS_SetMaxAcceleration(m_KeyHandle, node, max_acceleration, &m_ulErrorCode);
 }
 
+bool EPOS::SetRecorderParameter(WORD node, WORD value)
+{
+	return false;
+}
+
 long EPOS::GetPosition(WORD NodeID)
 {
 	long _pos = 0;
@@ -330,6 +335,19 @@ short EPOS::GetCurrentIsAveraged(WORD NodeID)
 	short _cur = 0;
 	if (VCS_GetCurrentIsAveraged(m_KeyHandle, NodeID, &_cur, &m_ulErrorCode))
 		return _cur;
+}
+
+WORD EPOS::GetRecorderParameter(WORD NodeID)
+{
+	WORD pSamplingPeriod = 0;
+	WORD pNbOfPrecedingSamples=0;
+	if(VCS_GetRecorderParameter(m_KeyHandle, NodeID,&pSamplingPeriod,&pNbOfPrecedingSamples, &m_ulErrorCode))
+	return pNbOfPrecedingSamples;
+}
+
+void EPOS::ShowChannelDataDlg(WORD NodeID)
+{
+	VCS_ShowChannelDataDlg(m_KeyHandle,NodeID,&m_ulErrorCode);
 }
 
 bool EPOS::ClearFault(WORD NodeID)

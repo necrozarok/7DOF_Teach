@@ -61,4 +61,7 @@ private slots:
 	void allScreenShots();
 signals:
 	void closedSignal();
+private:
+	void closeEvent(QCloseEvent *event);
+
 };

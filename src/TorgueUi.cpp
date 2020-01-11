@@ -38,13 +38,13 @@ void TorgueUi::realtimeDataSlot()
 	if (key - lastPointKey > 0.002) // at most add point every 5 ms
 	{
 		// add data to lines:
-		ui->customPlot->graph(0)->addData(key, (double)(40 / 22 * 80 * 9.55f * 18 * epos_object->GetCurrentIsAveraged(1) / epos_object->GetVelocityIs(1)));
-		ui->customPlot->graph(1)->addData(key, (double)(2 * 80 * 9.55f * 18 * epos_object->GetCurrentIsAveraged(2) / epos_object->GetVelocityIs(2)));
-		ui->customPlot->graph(2)->addData(key, (double)(100 * 9.55f * 18 * epos_object->GetCurrentIsAveraged(3) / epos_object->GetVelocityIs(3)));
-		ui->customPlot->graph(3)->addData(key, (double)(dynamixel_object->getMaxTorque(1)));
-		ui->customPlot->graph(4)->addData(key, (double)(dynamixel_object->getMaxTorque(2)));
-		ui->customPlot->graph(5)->addData(key, (double)(dynamixel_object->getMaxTorque(3)));
-		ui->customPlot->graph(6)->addData(key, (double)(dynamixel_object->getMaxTorque(4)));
+		ui->customPlot->graph(0)->addData(key, (double)(0.001f*40 / 22 * 80 * 9.55f * 18 * epos_object->GetCurrentIsAveraged(1) / epos_object->GetVelocityIs(1)));
+		ui->customPlot->graph(1)->addData(key, (double)(0.001f*2 * 80 * 9.55f * 18 * epos_object->GetCurrentIsAveraged(2) / epos_object->GetVelocityIs(2)));
+		ui->customPlot->graph(2)->addData(key, (double)(0.001f*100 * 9.55f * 18 * epos_object->GetCurrentIsAveraged(3) / epos_object->GetVelocityIs(3)));
+		/*ui->customPlot->graph(3)->addData(key, (double)(dynamixel_object->getMaxTorque(1)*5.5/1000));
+		ui->customPlot->graph(4)->addData(key, (double)(dynamixel_object->getMaxTorque(2)*5.5/1000));
+		ui->customPlot->graph(5)->addData(key, (double)(dynamixel_object->getMaxTorque(3)*2.3/1000));
+		ui->customPlot->graph(6)->addData(key, (double)(dynamixel_object->getMaxTorque(4)*2.3/1000));*/
 		// rescale value (vertical) axis to fit the current data:
 		ui->customPlot->graph(0)->rescaleValueAxis(true);
 		ui->customPlot->graph(1)->rescaleValueAxis(true);
@@ -170,7 +170,7 @@ void TorgueUi::setupRealtimeTorgueData(QCustomPlot * customPlot)
 	customPlot->legend->setFont(QFont("Helvetica", 9));
 	// axis configurations:
 	customPlot->xAxis->setLabel("Time:second");
-	customPlot->yAxis->setLabel("转矩/mNm");
+	customPlot->yAxis->setLabel("转矩/Nm");
 	// include this section to fully disable antialiasing for higher performance:
 	/*
 	customPlot->setNotAntialiasedElements(QCP::aeAll);
@@ -207,7 +207,7 @@ void TorgueUi::setupRealtimeTorgueData(QCustomPlot * customPlot)
 	timeTicker->setTimeFormat("%h:%m:%s");
 	customPlot->xAxis->setTicker(timeTicker);
 	customPlot->axisRect()->setupFullAxesBox();
-	customPlot->yAxis->setRange(-6000, 6000);
+	customPlot->yAxis->setRange(-100, 100);
 
 	// make left and bottom axes transfer their ranges to right and top axes:
 	connect(customPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), customPlot->xAxis2, SLOT(setRange(QCPRange)));
@@ -216,5 +216,10 @@ void TorgueUi::setupRealtimeTorgueData(QCustomPlot * customPlot)
 	// setup a timer that repeatedly calls CurrentUi::realtimeDataSlot:
 	connect(&dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
 	dataTimer.start(50); // Interval 0 means to refresh as fast as possible
+}
+
+void TorgueUi::closeEvent(QCloseEvent * event)
+{
+	QMainWindow *parWind = (QMainWindow*)parentWidget();//获取父窗口指针
 }
 

@@ -688,7 +688,7 @@ void CurrentUi::setupRealtimeDataDemo(QCustomPlot *customPlot)
 	timeTicker->setTimeFormat("%h:%m:%s");
 	customPlot->xAxis->setTicker(timeTicker);
 	customPlot->axisRect()->setupFullAxesBox();
-	customPlot->yAxis->setRange(-10000, 10000);
+	customPlot->yAxis->setRange(-6000, 6000);
 
 	// make left and bottom axes transfer their ranges to right and top axes:
 	connect(customPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), customPlot->xAxis2, SLOT(setRange(QCPRange)));
@@ -1355,10 +1355,14 @@ void CurrentUi::realtimeDataSlot()
 		ui->customPlot->graph(0)->addData(key, (double)epos_object->GetCurrentIsAveraged(1));
 		ui->customPlot->graph(1)->addData(key, (double)epos_object->GetCurrentIsAveraged(2));
 		ui->customPlot->graph(2)->addData(key, (double)epos_object->GetCurrentIsAveraged(3));
-		ui->customPlot->graph(3)->addData(key,(double)(4.5*(dynamixel_object->getPresentCurrent(1)-2048)));
-		ui->customPlot->graph(4)->addData(key, (double)(4.5 * (dynamixel_object->getPresentCurrent(2) - 2048)));
-		ui->customPlot->graph(5)->addData(key, (double)(4.5 * (dynamixel_object->getPresentCurrent(3) - 2048)));
-		ui->customPlot->graph(6)->addData(key, (double)(4.5 * (dynamixel_object->getPresentCurrent(4) - 2048)));
+		//ui->customPlot->graph(3)->addData(key, (double)(dynamixel_object->getPresentCurrent(1)));
+		//ui->customPlot->graph(4)->addData(key, (double)(dynamixel_object->getPresentCurrent(2)));
+		//ui->customPlot->graph(5)->addData(key, (double)(dynamixel_object->getPresentCurrent(3)));
+		//ui->customPlot->graph(6)->addData(key, (double)(dynamixel_object->getPresentCurrent(4)));
+		/*ui->customPlot->graph(3)->addData(key, (double)(4.5 * abs(dynamixel_object->getPresentCurrent(1) - 2048)));
+		ui->customPlot->graph(4)->addData(key, (double)(4.5 * abs(dynamixel_object->getPresentCurrent(2) - 2048)));
+		ui->customPlot->graph(5)->addData(key, (double)(4.5 * abs(dynamixel_object->getPresentCurrent(3) - 2048)));
+		ui->customPlot->graph(6)->addData(key, (double)(4.5 * abs(dynamixel_object->getPresentCurrent(4) - 2048)));*/
 		// rescale value (vertical) axis to fit the current data:
 		ui->customPlot->graph(0)->rescaleValueAxis(true);
 		ui->customPlot->graph(1)->rescaleValueAxis(true);
@@ -1480,4 +1484,9 @@ void CurrentUi::allScreenShots()
 	{
 		qApp->quit();
 	}
+}
+
+void CurrentUi::closeEvent(QCloseEvent * event)
+{
+	QMainWindow *parWind = (QMainWindow*)parentWidget();//获取父窗口指针
 }

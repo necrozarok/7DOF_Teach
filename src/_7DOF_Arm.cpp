@@ -13,6 +13,7 @@ _7DOF_Arm::_7DOF_Arm()
 
 _7DOF_Arm::~_7DOF_Arm()
 {
+
 	if (dynamixel_object->checkPort())
 	{
 		dynamixel_object->disableTorque(DY_ID_A);
@@ -45,6 +46,13 @@ void _7DOF_Arm::Initialize()
 {
 	StartTimer();
 	//EPOS初始化
+	//QMessageBox::about(NULL, "warning", QString::asprintf("Parameter:%d", epos_object->GetRecorderParameter(M1_Node)));
+	/*epos_object->ShowChannelDataDlg(M1_Node);
+	epos_object->ShowChannelDataDlg(M2_Node);
+	epos_object->ShowChannelDataDlg(M3_Node);*/
+
+	actuate_value = 40000;//qc
+
 	epos_object->ClearFault(M1_Node);
 	epos_object->ClearFault(M2_Node);
 	epos_object->ClearFault(M3_Node);
@@ -65,6 +73,16 @@ void _7DOF_Arm::Initialize()
 	m_lStartPosition2 = epos_object->GetPosition(M2_Node);
 	m_lStartPosition3 = epos_object->GetPosition(M3_Node);
 	//Dynamixel初始化
+	dynamixel_object->setCW(DY_ID_A, cw_pos_limit[0]);
+	dynamixel_object->setCW(DY_ID_B, cw_pos_limit[1]);
+	dynamixel_object->setCW(DY_ID_C, cw_pos_limit[2]);
+	dynamixel_object->setCW(DY_ID_D, cw_pos_limit[3]);
+
+	dynamixel_object->setCCW(DY_ID_A, ccw_pos_limit[0]);
+	dynamixel_object->setCCW(DY_ID_B, ccw_pos_limit[1]);
+	dynamixel_object->setCCW(DY_ID_C, ccw_pos_limit[2]);
+	dynamixel_object->setCCW(DY_ID_D, ccw_pos_limit[3]);
+
 	dynamixel_object->setSpeed(DY_ID_A, max_speed[0]);
 	dynamixel_object->setSpeed(DY_ID_B, max_speed[1]);
 	dynamixel_object->setSpeed(DY_ID_C, max_speed[2]);
@@ -84,6 +102,7 @@ void _7DOF_Arm::Initialize()
 	dynamixel_object->enableTorque(DY_ID_B);
 	dynamixel_object->enableTorque(DY_ID_C);
 	dynamixel_object->enableTorque(DY_ID_D);
+
 	return;
 }
 
@@ -178,7 +197,7 @@ void _7DOF_Arm::StartTimer()
 	isConnected = true;
 	read_Timer->start(500);
 	connect(read_Timer, SIGNAL(timeout()), this, SLOT(ReadAllPos()));
-	connect(read_Timer, SIGNAL(timeout()), this, SLOT(EPOSCheck()));
+	//connect(read_Timer, SIGNAL(timeout()), this, SLOT(EPOSCheck()));//换成cbox控制
 }
 
 void _7DOF_Arm::ReadAllPos()
@@ -344,10 +363,11 @@ void _7DOF_Arm::EPOSCheck()
 	//再次校验端口是否连接，无连接则停止定时器，直到再次收到Connected信号
 	if (!(dynamixel_object->isconnected() && epos_object->isconnected()))
 		StopTimer();
+	//QMessageBox::about(NULL, "", "checking");
 	m_lActuaCurrent1 = epos_object->GetCurrentIsAveraged(M1_Node);
 	if (m_lActuaCurrent1 > m_ThresholdCurrent1)
 	{
-		QMessageBox::about(NULL, "", "Node1电流过大(大于7000mA)，自动制动");
+		QMessageBox::about(NULL, "", QString::asprintf("Node1电流过大(大于%dmA)，自动制动", m_ThresholdCurrent1));
 		if (!epos_object->HaltVelocityMovement(M1_Node))
 		{
 			epos_object->ShowErrorInformation();
@@ -361,7 +381,7 @@ void _7DOF_Arm::EPOSCheck()
 	m_lActuaCurrent2 = epos_object->GetCurrentIsAveraged(M2_Node);
 	if (m_lActuaCurrent2 > m_ThresholdCurrent2)
 	{
-		QMessageBox::about(NULL, "", "Node2电流过大(大于7000mA)，自动制动");
+		QMessageBox::about(NULL, "", QString::asprintf("Node1电流过大(大于%dmA)，自动制动", m_ThresholdCurrent1));
 		if (!epos_object->HaltVelocityMovement(M2_Node))
 		{
 			epos_object->ShowErrorInformation();
@@ -375,7 +395,7 @@ void _7DOF_Arm::EPOSCheck()
 	m_lActuaCurrent3 = epos_object->GetCurrentIsAveraged(M3_Node);
 	if (m_lActuaCurrent3 > m_ThresholdCurrent3)
 	{
-		QMessageBox::about(NULL, "", "Node3电流过大(大于7000mA)，自动制动");
+		QMessageBox::about(NULL, "", QString::asprintf("Node1电流过大(大于%dmA)，自动制动", m_ThresholdCurrent1));
 		if (!epos_object->HaltVelocityMovement(M3_Node))
 		{
 			epos_object->ShowErrorInformation();
@@ -385,6 +405,18 @@ void _7DOF_Arm::EPOSCheck()
 			epos_object->ShowErrorInformation();
 		}
 	}
+}
+
+void _7DOF_Arm::cb_CurrentThreshold_checked()
+{
+	//QMessageBox::about(NULL, "", "cb_CurrentThreshold_checked");
+	connect(read_Timer, SIGNAL(timeout()), this, SLOT(EPOSCheck()));
+}
+
+void _7DOF_Arm::cb_CurrentThreshold_unchecked()
+{
+	//QMessageBox::about(NULL, "", "cb_CurrentThreshold_unchecked");
+	disconnect(read_Timer, SIGNAL(timeout()), this, SLOT(EPOSCheck()));
 }
 
 void _7DOF_Arm::cb_Actuate_checked()
@@ -449,7 +481,7 @@ void _7DOF_Arm::AutoActuate()
 		//QMessageBox::about(NULL, "", QString::asprintf("1actual:%d  1start:%d", m_lActualPosition1, m_lStartPosition1));
 		actuate_Timer->stop();
 		disconnect(actuate_Timer, SIGNAL(timeout()), this, SLOT(AutoActuate()));
-		m_lTargetPosition1 = (m_lActualPosition1 > m_lStartPosition1) ? epos_object->GetPosition(M1_Node) + 40000 : epos_object->GetPosition(M1_Node) - 40000;
+		m_lTargetPosition1 = (m_lActualPosition1 > m_lStartPosition1) ? epos_object->GetPosition(M1_Node) + actuate_value : epos_object->GetPosition(M1_Node) - actuate_value;
 		//QMessageBox::about(NULL, "", QString::asprintf("1target:%d", m_lTargetPosition1));
 		//QMessageBox::about(NULL, "", QString::asprintf("1target:%d", m_lTargetPosition1));
 		epos_object->Move_Position_Mode(
@@ -479,7 +511,7 @@ void _7DOF_Arm::AutoActuate()
 		//QMessageBox::about(NULL, "", QString::asprintf("2actual:%d  2start:%d", m_lActualPosition2, m_lStartPosition2));
 		actuate_Timer->stop();
 		disconnect(actuate_Timer, SIGNAL(timeout()), this, SLOT(AutoActuate()));
-		m_lTargetPosition2 = (m_lActualPosition2 > m_lStartPosition2) ? epos_object->GetPosition(M2_Node) + 30000 : epos_object->GetPosition(M2_Node) - 30000;
+		m_lTargetPosition2 = (m_lActualPosition2 > m_lStartPosition2) ? epos_object->GetPosition(M2_Node) + actuate_value/2 : epos_object->GetPosition(M2_Node) - actuate_value/2;
 		//QMessageBox::about(NULL, "", QString::asprintf("2target:%d", m_lTargetPosition2));
 		
 		epos_object->Move_Position_Mode(
@@ -556,6 +588,11 @@ void _7DOF_Arm::AutoActuateDone()
 	
 }
 
+void _7DOF_Arm::slider__Actuate_valueChanged(int value)
+{
+	actuate_value = value;
+}
+
 void _7DOF_Arm::cb_Torque_checked()
 {
 	if (!(dynamixel_object->isconnected() && epos_object->isconnected()))
@@ -580,4 +617,191 @@ void _7DOF_Arm::cb_Torque_unchecked()
 	dynamixel_object->setMaxTorque(DY_ID_B, loosen_torque[1]);
 	dynamixel_object->setMaxTorque(DY_ID_C, loosen_torque[2]);
 	dynamixel_object->setMaxTorque(DY_ID_D, loosen_torque[3]);
+}
+
+void _7DOF_Arm::btn_TuningUp1(int step, int velocity)
+{
+	//QMessageBox::about(NULL, "warning", QString::asprintf("step:%d velocity:%d", step, velocity));
+	epos_object->Move_Position_Mode(
+		M1_Node,
+		velocity,
+		800,
+		800,
+		m_lStartPosition1,
+		step,
+		m_lActualPosition1,
+		ISRELATE,
+		ISIMMEDIATELY
+	);
+}
+
+void _7DOF_Arm::btn_TuningUp2(int step, int velocity)
+{
+	//QMessageBox::about(NULL, "warning", QString::asprintf("step:%d velocity:%d", step, velocity));
+	epos_object->Move_Position_Mode(
+		M2_Node,
+		velocity,
+		800,
+		800,
+		m_lStartPosition2,
+		step,
+		m_lActualPosition2,
+		ISRELATE,
+		ISIMMEDIATELY
+	);
+}
+
+void _7DOF_Arm::btn_TuningUp3(int step, int velocity)
+{
+	//QMessageBox::about(NULL, "warning", QString::asprintf("step:%d velocity:%d", step, velocity));
+	epos_object->Move_Position_Mode(
+		M3_Node,
+		velocity,
+		800,
+		800,
+		m_lStartPosition3,
+		step,
+		m_lActualPosition3,
+		ISRELATE,
+		ISIMMEDIATELY
+	);
+}
+
+void _7DOF_Arm::btn_TuningDown1(int step, int velocity)
+{
+	//QMessageBox::about(NULL, "warning", QString::asprintf("step:%d velocity:%d", step, velocity));
+	epos_object->Move_Position_Mode(
+		M1_Node,
+		velocity,
+		800,
+		800,
+		m_lStartPosition1,
+		-step,
+		m_lActualPosition1,
+		ISRELATE,
+		ISIMMEDIATELY
+	);
+}
+
+void _7DOF_Arm::btn_TuningDown2(int step, int velocity)
+{
+	//QMessageBox::about(NULL, "warning", QString::asprintf("step:%d velocity:%d", step, velocity));
+	epos_object->Move_Position_Mode(
+		M2_Node,
+		velocity,
+		800,
+		800,
+		m_lStartPosition2,
+		-step,
+		m_lActualPosition2,
+		ISRELATE,
+		ISIMMEDIATELY
+	);
+}
+
+void _7DOF_Arm::btn_TuningDown3(int step, int velocity)
+{
+	//QMessageBox::about(NULL, "warning", QString::asprintf("step:%d velocity:%d", step, velocity));
+	epos_object->Move_Position_Mode(
+		M3_Node,
+		velocity,
+		800,
+		800,
+		m_lStartPosition3,
+		-step,
+		m_lActualPosition3,
+		ISRELATE,
+		ISIMMEDIATELY
+	);
+}
+
+void _7DOF_Arm::dial_Tuning(int id, int value)
+{
+	//QMessageBox::about(NULL, "warning", QString::asprintf("id:%d value:%d", id, value));
+	switch (id)
+	{
+	case DY_ID_A:
+		try
+		{
+			dynamixel_object->enableTorque(DY_ID_A);
+			dynamixel_object->setMaxTorque(DY_ID_A, max_torque[0]);
+			dynamixel_object->move(DY_ID_A, value);
+		}
+		catch (...)
+		{
+			QMessageBox::about(nullptr,"","error");
+		}
+		break;
+	case DY_ID_B:
+		try
+		{
+		dynamixel_object->enableTorque(DY_ID_B);
+		dynamixel_object->setMaxTorque(DY_ID_B, max_torque[1]);
+		dynamixel_object->move(DY_ID_B, value);
+		}
+		catch (...)
+		{
+			QMessageBox::about(nullptr, "", "error");
+		}
+		break;
+	case DY_ID_C:
+		try
+		{
+		dynamixel_object->enableTorque(DY_ID_C);
+		dynamixel_object->setMaxTorque(DY_ID_C, max_torque[2]);
+		dynamixel_object->move(DY_ID_C, value);
+		}
+		catch (...)
+		{
+			QMessageBox::about(nullptr, "", "error");
+		}
+		break;
+	case DY_ID_D:
+		try
+		{
+		dynamixel_object->enableTorque(DY_ID_D);
+		dynamixel_object->setMaxTorque(DY_ID_D, max_torque[3]);
+		dynamixel_object->move(DY_ID_D, value);
+		//QMessageBox::about(NULL, "warning", QString::asprintf("id:%d value:%d", id, value));
+		}
+		catch (...)
+		{
+			QMessageBox::about(nullptr, "", "error");
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+void _7DOF_Arm::dial_Init()
+{
+	if (dynamixel_object->isconnected() && epos_object->isconnected())
+	{
+		//初始化Dynamixel微调旋钮
+		dxl_present_position[0] = dynamixel_object->getPresentPosition(DY_ID_A);
+		dxl_present_position[1] = dynamixel_object->getPresentPosition(DY_ID_B);
+		dxl_present_position[2] = dynamixel_object->getPresentPosition(DY_ID_C);
+		dxl_present_position[3] = dynamixel_object->getPresentPosition(DY_ID_D);
+		emit Dynamixel_Dial_Init_Signal(cw_pos_limit, ccw_pos_limit, dxl_present_position);
+		//QMessageBox::about(NULL, "", "init");
+	}
+}
+
+void _7DOF_Arm::sb_ThresholdCurrent_valueChanged1(int value)
+{
+	m_ThresholdCurrent1 = value;
+	//QMessageBox::about(nullptr, "", QString::asprintf("%d",value));
+}
+
+void _7DOF_Arm::sb_ThresholdCurrent_valueChanged2(int value)
+{
+	m_ThresholdCurrent2 = value;
+	//QMessageBox::about(nullptr, "", QString::asprintf("%d", value));
+}
+
+void _7DOF_Arm::sb_ThresholdCurrent_valueChanged3(int value)
+{
+	m_ThresholdCurrent3 = value;
+	//QMessageBox::about(nullptr, "", QString::asprintf("%d", value));
 }

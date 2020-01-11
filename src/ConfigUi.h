@@ -2,6 +2,7 @@
 
 #include <QDialog>
 #include <QMessageBox>
+#include <QMainWindow> 
 #include "Dynamixel.h"
 #include "EPOS.h"
 namespace Ui { class ConfigUi; };
@@ -29,6 +30,7 @@ private slots:
 	void ID2_Para_Write_clicked();
 	void ID3_Para_Write_clicked();
 	void ID4_Para_Write_clicked();
+
 signals:
 	//maxon
 	void SendMotionPara1(DWORD ProfileVelocity, DWORD ProfileAcceleration, DWORD ProfileDeceleration, DWORD Amaxvelocity, DWORD AmaxAcceleration, DWORD AmaxFollowingError);

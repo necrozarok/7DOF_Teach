@@ -34,4 +34,6 @@ private slots:
 	void realtimeDataSlot();
 signals:
 	void closedSignal();
+private:
+	void closeEvent(QCloseEvent *event);
 };

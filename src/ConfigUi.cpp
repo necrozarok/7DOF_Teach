@@ -501,3 +501,4 @@ void ConfigUi::ID4_Para_Write_clicked()
 	}
 	emit Send_ID4_Para(cw, ccw, velocity, torque, p_gain);
 }
+

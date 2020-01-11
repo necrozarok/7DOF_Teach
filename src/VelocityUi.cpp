@@ -82,6 +82,11 @@ void VelocityUi::setupRealtimeVelocityData(QCustomPlot * customPlot)
 	dataTimer.start(50); // Interval 0 means to refresh as fast as possible
 }
 
+void VelocityUi::closeEvent(QCloseEvent * event)
+{
+	QMainWindow *parWind = (QMainWindow*)parentWidget();//获取父窗口指针
+}
+
 void VelocityUi::realtimeDataSlot()
 {
 	static QTime time(QTime::currentTime());
@@ -91,13 +96,17 @@ void VelocityUi::realtimeDataSlot()
 	if (key - lastPointKey > 0.002) // at most add point every 5 ms
 	{
 		// add data to lines:
-		ui->customPlot->graph(0)->addData(key, (double)20/(44*80)*epos_object->GetVelocityIs(1));
-		ui->customPlot->graph(1)->addData(key, (double)epos_object->GetVelocityIs(2)/(2*80));
-		ui->customPlot->graph(2)->addData(key, (double)epos_object->GetVelocityIs(3)/100);
-		ui->customPlot->graph(3)->addData(key, (double)0.114*(dynamixel_object->getPresentVelocity(1)));
+		ui->customPlot->graph(0)->addData(key, (double)(20/(44*80)*epos_object->GetVelocityIs(1)));
+		ui->customPlot->graph(1)->addData(key, (double)(epos_object->GetVelocityIs(2)/(2*80)));
+		ui->customPlot->graph(2)->addData(key, (double)(epos_object->GetVelocityIs(3)/100));
+		//ui->customPlot->graph(3)->addData(key, (double)((dynamixel_object->getPresentVelocity(1)*0.114f)));
+		//ui->customPlot->graph(4)->addData(key, (double)((dynamixel_object->getPresentVelocity(2)*0.114f)));
+		//ui->customPlot->graph(5)->addData(key, (double)((dynamixel_object->getPresentVelocity(3)*0.114f)));
+		//ui->customPlot->graph(6)->addData(key, (double)((dynamixel_object->getPresentVelocity(4)*0.114f)));
+	/*	ui->customPlot->graph(3)->addData(key, (double)0.114*(dynamixel_object->getPresentVelocity(1)));
 		ui->customPlot->graph(4)->addData(key, (double)0.114*(dynamixel_object->getPresentVelocity(2)));
 		ui->customPlot->graph(5)->addData(key, (double)0.114*(dynamixel_object->getPresentVelocity(3)));
-		ui->customPlot->graph(6)->addData(key, (double)0.114*(dynamixel_object->getPresentVelocity(4)));
+		ui->customPlot->graph(6)->addData(key, (double)0.114*(dynamixel_object->getPresentVelocity(4)));*/
 		// rescale value (vertical) axis to fit the current data:
 		ui->customPlot->graph(0)->rescaleValueAxis(true);
 		ui->customPlot->graph(1)->rescaleValueAxis(true);

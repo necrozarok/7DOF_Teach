@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
+    <Keyword>QtVS_v301</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
+    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <QtInstall>5.9.8</QtInstall>
+    <QtModules>core;gui;help;printsupport;uitools;widgets</QtModules>
+  </PropertyGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <QtInstall>5.9.8</QtInstall>
+    <QtModules>charts;core;gui;help;printsupport;serialport;sql;uitools;widgets</QtModules>
+  </PropertyGroup>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <AdditionalIncludeDirectories>.\include;$(QTDIR)\include\QtSerialPort;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>QT_SERIALPORT_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>dxl_x64_cpp.lib;EposCmd64.lib;qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5QuickTestd.lib;Qt5Testd.lib;Qt5UiToolsd.lib;Qt5Widgetsd.lib;Qt5SerialPortd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat />
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <AdditionalIncludeDirectories>$(QTDIR)\include\QtSerialPort;.\include;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>QT_SERIALPORT_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>dxl_x64_cpp.lib;EposCmd64.lib;qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5QuickTest.lib;Qt5Test.lib;Qt5UiTools.lib;Qt5Widgets.lib;Qt5SerialPort.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="about.cpp" />
+    <ClCompile Include="ActPosCheckThread.cpp" />
+    <ClCompile Include="ConfigUi.cpp" />
+    <ClCompile Include="ConnectUi.cpp" />
+    <ClCompile Include="CurrentUi.cpp" />
+    <ClCompile Include="DOF_Teach.cpp" />
+    <ClCompile Include="Dynamixel.cpp" />
+    <ClCompile Include="EPOS.cpp" />
+    <ClCompile Include="HelpUi.cpp" />
+    <ClCompile Include="InverseKinematics.cpp" />
+    <ClCompile Include="Label.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="PlotSetting.cpp" />
+    <ClCompile Include="PosCheckThread.cpp" />
+    <ClCompile Include="Push_Button.cpp" />
+    <ClCompile Include="qcustomplot.cpp" />
+    <ClCompile Include="RecrodDB.cpp" />
+    <ClCompile Include="Shadow_Widget.cpp" />
+    <ClCompile Include="TorgueUi.cpp" />
+    <ClCompile Include="TuningButton.cpp" />
+    <ClCompile Include="User_Setting.cpp" />
+    <ClCompile Include="VelocityUi.cpp" />
+    <ClCompile Include="_7DOF_Arm.cpp" />
+    <ClCompile Include="_log.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="DOF_Teach.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="about.ui" />
+    <QtUic Include="ConfigUi.ui" />
+    <QtUic Include="ConnectUi.ui" />
+    <QtUic Include="CurrentUi.ui" />
+    <QtUic Include="DOF_Teach.ui" />
+    <QtUic Include="HelpUi.ui" />
+    <QtUic Include="PlotSetting.ui" />
+    <QtUic Include="RecrodDB.ui" />
+    <QtUic Include="TorgueUi.ui" />
+    <QtUic Include="VelocityUi.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="DOF_Teach.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="EPOS.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Dynamixel.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="InverseKinematics.h" />
+    <QtMoc Include="PlotSetting.h" />
+    <QtMoc Include="TuningButton.h" />
+    <QtMoc Include="RecrodDB.h" />
+    <ClInclude Include="_log.h" />
+    <QtMoc Include="Label.h" />
+    <QtMoc Include="HelpUi.h" />
+    <ClInclude Include="User_Setting.h" />
+    <QtMoc Include="Shadow_Widget.h" />
+    <QtMoc Include="VelocityUi.h" />
+    <QtMoc Include="TorgueUi.h" />
+    <QtMoc Include="_7DOF_Arm.h" />
+    <QtMoc Include="ConnectUi.h" />
+    <QtMoc Include="ConfigUi.h" />
+    <QtMoc Include="CurrentUi.h" />
+    <QtMoc Include="qcustomplot.h" />
+    <QtMoc Include="PosCheckThread.h" />
+    <QtMoc Include="ActPosCheckThread.h" />
+    <QtMoc Include="about.h" />
+    <QtMoc Include="Push_Button.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="7DOF_Teach.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="ico\exit_128px.ico" />
+    <Image Include="ico\robotics.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

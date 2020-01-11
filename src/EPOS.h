@@ -64,11 +64,14 @@ public:
 	void SetMaxFollowingError(WORD node,DWORD follow_error);
 	void SetMaxProfileVelocity(WORD node, DWORD profile_velocity);
 	void SetMaxAcceleration(WORD node, DWORD max_acceleration);
+	bool SetRecorderParameter(WORD node, WORD value);
 	//¶ÁÈ¡
 	long GetPosition(WORD NodeID);
 	long GetVelocityIs(WORD NodeID);
 	short GetCurrentIsAveraged(WORD NodeID);
+	WORD GetRecorderParameter(WORD NodeID);
 	//²Ù×÷
+	void ShowChannelDataDlg(WORD NodeID);
 	bool ClearFault(WORD NodeID);
 	void Disable(WORD NodeID);
 	void Enable(WORD NodeID);

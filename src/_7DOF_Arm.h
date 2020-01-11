@@ -40,6 +40,7 @@ private:
 	QTimer *read_Timer,*actuate_Timer;
 	bool maxon_moving=false;
 	bool isConnected = false;
+	int actuate_value;
 	//实时位置qc
 	long    m_lActualPosition1;
 	long    m_lActualPosition2;
@@ -61,9 +62,9 @@ private:
 	short   m_lActuaCurrent2;
 	short   m_lActuaCurrent3;
 	//电流阈值mA
-	short   m_ThresholdCurrent1 = 5000;
-	short   m_ThresholdCurrent2 = 5000;
-	short   m_ThresholdCurrent3 = 6000;
+	short   m_ThresholdCurrent1 = 4000;
+	short   m_ThresholdCurrent2 = 4000;
+	short   m_ThresholdCurrent3 = 5000;
 	//实时转矩mNm
 	long    m_lActuaTorgue1;
 	long    m_lActuaTorgue2;
@@ -92,7 +93,7 @@ private:
 	DWORD m_AmaxFollowingError1=2000;
 	DWORD m_AmaxFollowingError2 = 2000;
 	DWORD m_AmaxFollowingError3 = 2000;
-
+	
 	//Dynamixel
 	int max_torque[4] = { 600,600,600,300 };
 	int pgain[4] = { 32,32,32,32 };
@@ -102,8 +103,8 @@ private:
 	const int max_degree[4] = { 90, 90, 90, 90 };
 	const int min_value[4] = { 1100, 150, 220, 200 };
 	const int max_value[4] = { 2100, 1020, 500, 500 };
-	uint16_t cw_pos_limit[4] = { 0, 290, 900, 1050 };
-	uint16_t ccw_pos_limit[4] = { 4095, 2690, 4000, 3000 };
+	uint16_t cw_pos_limit[4] = { 10, 1900, 10, 10 };
+	uint16_t ccw_pos_limit[4] = { 3500, 3400, 4192, 4192 };
 	int dxl_goal_position[4] = { 0, 0, 0, 0 };  // Goal position
 	uint16_t dxl_present_position[4] = { 0, 0, 0, 0 };
 public slots:
@@ -129,17 +130,34 @@ public slots:
 	void UrgencyHalt();
 	//Maxon监测
 	void EPOSCheck();//绑定timer
+	void cb_CurrentThreshold_checked();
+	void cb_CurrentThreshold_unchecked();
+	//过载保护电流阈值
+	void sb_ThresholdCurrent_valueChanged1(int value);
+	void sb_ThresholdCurrent_valueChanged2(int value);
+	void sb_ThresholdCurrent_valueChanged3(int value);
 	//内驱力
 	void cb_Actuate_checked();
 	void cb_Actuate_unchecked();
 	void AutoActuate();//绑定actuate_Timer
 	void AutoActuateDone();
+	void slider__Actuate_valueChanged(int value);
 	//力矩
 	void cb_Torque_checked();
 	void cb_Torque_unchecked();
+	//微调
+	void btn_TuningUp1(int step, int velocity);
+	void btn_TuningUp2(int step, int velocity);
+	void btn_TuningUp3(int step, int velocity);
+	void btn_TuningDown1(int step, int velocity);
+	void btn_TuningDown2(int step, int velocity);
+	void btn_TuningDown3(int step, int velocity);
+	void dial_Tuning(int id,int value);	
+	void dial_Init();
 signals:
 	//位置信息发送
 	void PosSignal(int node1_pos, int node2_pos, int node3_pos, int ID1_pos, int ID2_pos, int ID3_pos, int ID4_pos);
 	void TeachPosSignal(int node1_pos, int node2_pos, int node3_pos, int ID1_pos, int ID2_pos, int ID3_pos, int ID4_pos);
+	void Dynamixel_Dial_Init_Signal(uint16_t cw[4], uint16_t ccw[4], uint16_t current_value[4]);
 };
 

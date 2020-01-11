@@ -26,6 +26,7 @@ public slots:
 	void GetPortName(QString interfaceName);
 signals:
 	void Connected();
+
 private:
 	Ui::ConnectUi *ui;
 	QStringList m_serialPortName;//保存串口列表

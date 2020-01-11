@@ -9,5 +9,46 @@
         <file>ico/open_in_browser_128px_1169854_easyicon.net.ico</file>
         <file>ico/saving_128px_1148565_easyicon.net.ico</file>
         <file>ico/save_as_128px_1169862_easyicon.net.ico</file>
+        <file>ico/speedometer_128px_1207905_easyicon.net.ico</file>
+        <file>ico/down.ico</file>
+        <file>ico/up.ico</file>
+        <file>ico/down_.png</file>
+        <file>ico/down_hover.png</file>
+        <file>ico/up_.png</file>
+        <file>ico/up_hover.png</file>
+        <file>ico/down_pressed.png</file>
+        <file>ico/up_pressed.png</file>
+        <file>ico/DB/data_configuration_128px_1168770_easyicon.net.ico</file>
     </qresource>
+    <qresource prefix="/help">
+        <file>ico/help/help_0.png</file>
+        <file>ico/help/help_1.png</file>
+        <file>ico/help/help_2.png</file>
+        <file>ico/help/help_3.png</file>
+        <file>ico/machine2.ico</file>
+        <file>ico/help/h_0.ico</file>
+        <file>ico/help/h_1.ico</file>
+        <file>ico/help/h_2.ico</file>
+        <file>ico/help/h_3.ico</file>
+        <file>ico/help/back.jpg</file>
+    </qresource>
+    <qresource prefix="/sys">
+        <file>ico/sysButton/arrow_down.png</file>
+        <file>ico/sysButton/feedback.png</file>
+        <file>ico/sysButton/feedback_hover.png</file>
+        <file>ico/sysButton/feedback_pressed.png</file>
+        <file>ico/sysButton/menu.png</file>
+        <file>ico/sysButton/menu_hover.png</file>
+        <file>ico/sysButton/menu_pressed.png</file>
+        <file>ico/sysButton/min.png</file>
+        <file>ico/sysButton/min_hover.png</file>
+        <file>ico/sysButton/min_pressed.png</file>
+        <file>ico/sysButton/skin.png</file>
+        <file>ico/sysButton/skin_hover.png</file>
+        <file>ico/sysButton/skin_pressed.png</file>
+        <file>ico/help/close.png</file>
+        <file>ico/help/close_hover.png</file>
+        <file>ico/help/close_pressed.png</file>
+    </qresource>
+    <qresource prefix="/"/>
 </RCC>
